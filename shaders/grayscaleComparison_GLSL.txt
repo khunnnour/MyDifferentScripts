@@ -1,0 +1,38 @@
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    // Normalized pixel coordinates (from 0 to 1)
+    vec2 uv = fragCoord/iResolution.xy;
+
+    // Get image
+    vec4 col = texture(iChannel0, uv);
+    vec4 newCol = col;
+    
+    // grayscale val
+    float val;
+    
+    // Calculate different values based on slices
+    
+    if ((uv.x <= 0.1 || uv.x >= 0.9) || (uv.y <= 0.1 || uv.y >= 0.9))
+    {   
+        newCol.r = col.r;
+    	newCol.g = col.g;
+    	newCol.b = col.b;
+    }
+    else if (uv.x <= 0.5)
+    {
+        val = (col.r + col.g + col.b) / 3.0;
+    	newCol.r = val;
+    	newCol.g = val;
+    	newCol.b = val;
+    }
+    else
+    {
+        val = 0.30*col.r + 0.59*col.g + 0.11*col.b;
+    	newCol.r = val;
+    	newCol.g = val;
+    	newCol.b = val;
+    }
+    
+    // Output to screen
+    fragColor = newCol;
+}

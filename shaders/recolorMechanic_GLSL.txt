@@ -1,0 +1,23 @@
+void mainImage( out vec4 fragColor, in vec2 fragCoord )
+{
+    // Normalized pixel coordinates (from 0 to 1)
+    vec2 uv = fragCoord/iResolution.xy;
+
+    // Get image
+    vec4 col = texture(iChannel0, uv);
+    vec4 newCol = col;
+    
+    // "amounts" of each color
+    float r=0.0,g=2.5,b=0.0;
+    
+    // approximate grayscale
+    float avg = (col.r + col.g + col.b) / 3.0;
+    
+    // add percentage of lost color value
+    newCol.r = avg + ((col.r-avg)*r);
+    newCol.g = avg + ((col.g-avg)*g);
+    newCol.b = avg + ((col.b-avg)*b);
+    
+    // Output to screen
+    fragColor = newCol;
+}
